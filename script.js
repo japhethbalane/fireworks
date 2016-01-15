@@ -74,12 +74,43 @@ function Particle() {
 	this.x = canvas.width/2;
 	this.y = canvas.height/2;
 	this.angle = randomBetween(1, 360);
-	this.life = 50;
 	this.radius = randomBetween(1,5);
 	this.speed = randomBetween(1,5);
+	this.life = 2;
+	this.r = 0;
+	this.g = 0;
+	this.b = 0;
+
+	this.color = function() {
+	    var prioColor = randomBetween(1,7);
+	    
+        if (prioColor == 1) {
+            this.r = randomBetween(50,255);
+        };
+        if (prioColor == 2) {
+            this.g = randomBetween(50,255);
+        };
+        if (prioColor == 3) {
+            this.b = randomBetween(50,255);
+        };
+        if (prioColor == 4) {
+            this.r = randomBetween(50,255);
+            this.g = randomBetween(50,255);
+        };
+        if (prioColor == 5) {
+            this.g = randomBetween(50,255);
+            this.b = randomBetween(50,255);
+        };
+        if (prioColor == 6) {
+            this.b = randomBetween(50,255);
+            this.r = randomBetween(50,255);
+        };
+	}
+	this.color();
 
 	this.update = function() {
-		this.life--;
+		this.life-=0.03;
+
 		var dx = Math.cos(this.angle) * this.speed;
 		var dy = Math.sin(this.angle) * this.speed;
 		this.x += dx;
@@ -91,7 +122,7 @@ function Particle() {
 	this.draw = function() {
 		context.beginPath();
 		context.arc(this.x, this.y, this.radius, Math.PI*2, false);
-		context.fillStyle = "#fff";
+		context.fillStyle = "rgba("+this.r+","+this.g+","+this.b+","+this.life+")";
 		context.fill();
 
 		return this;
