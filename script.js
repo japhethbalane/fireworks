@@ -8,7 +8,13 @@ var particleCount = 100;
 var firework = new Firework();
 var particles = [];
 
+initClearCanvas();
 generateParticles();
+
+function initClearCanvas() {
+	context.fillStyle = "rgba(0,0,0,1)";
+	context.fillRect(0,0,canvas.width,canvas.height);
+}
 
 function generateParticles() {
 	for (var i = 0; i < particleCount; i++) {
