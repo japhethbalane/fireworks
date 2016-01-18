@@ -45,7 +45,11 @@ function world() {
 			};
 		}
 	};
-	console.log(particles.length);
+}
+
+function Flash() {
+	context.fillStyle = "rgba(255,255,255,1)";
+	context.fillRect(0,0,canvas.width,canvas.height);
 }
 
 function Firework() {
@@ -61,6 +65,9 @@ function Firework() {
 		};
 		if (this.y < canvas.height/2) {
 			this.explode = true;
+		};
+		if (this.explode) {
+			Flash();
 		};
 
 		return this;
