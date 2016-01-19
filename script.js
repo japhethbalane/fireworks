@@ -4,21 +4,20 @@ var context = canvas.getContext('2d');
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
-var particleCount = 100;
-var firework = new Firework();
-var particles = [];
+var fireworks = [];
+var fireworkCount = 5;
 
 initClearCanvas();
-generateParticles();
+generateFireworks();
 
 function initClearCanvas() {
 	context.fillStyle = "rgba(0,0,0,1)";
 	context.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function generateParticles() {
-	for (var i = 0; i < particleCount; i++) {
-		particles.push(new Particle());
+function generateFireworks() {
+	for (var i = 0; i < fireworkCount; i++) {
+		fireworks.push(new Firework());
 	}
 }
 
@@ -35,16 +34,18 @@ function randomBetween(min, max){
 
 function world() {
 	clearCanvas();
-	if (!firework.explode) {
-		firework.update().draw();
-	};
-	if (firework.explode) {
-		for (var i = 0; i < particles.length; i++) {
-			if (particles[i].life > 0) {
-				particles[i].update().draw();
-			};
-		}
-	};
+	for (var i = 0; i < fireworks.length; i++) {
+		if (!fireworks[i].explode) {
+			fireworks[i].update().draw();
+		};
+		if (fireworks[i].explode) {
+			for (var j = 0; j < fireworks[i].particles.length; j++) {
+				if (fireworks[i].particles[j].life > 0) {
+					fireworks[i].particles[j].update().draw();
+				};
+			}
+		};
+	}
 }
 
 function Flash() {
@@ -53,11 +54,21 @@ function Flash() {
 }
 
 function Firework() {
-	this.x = canvas.width / 2;
+	this.x = randomBetween(0,canvas.width);
 	this.y = canvas.height;
 	this.radius = 5;
 	this.explode = false;
 	this.speed = 5;
+
+	this.particles = [];
+	this.particleCount = 100;
+
+	this.generateParticles = function() {
+		for (var i = 0; i < this.particleCount; i++) {
+			this.particles.push(new Particle());
+		}
+	}
+	this.generateParticles();
 
 	this.update = function() {
 		if (this.y >= canvas.height/2) {
