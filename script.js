@@ -5,7 +5,7 @@ canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
 var fireworks = [];
-var fireworkCount = 5;
+var fireworkCount = 15;
 
 initClearCanvas();
 generateFireworks();
@@ -43,6 +43,9 @@ function world() {
 				if (fireworks[i].particles[j].life > 0) {
 					fireworks[i].particles[j].update().draw();
 				};
+				if (fireworks[i].particles[0].life <= 0) {
+					fireworks[i] = new Firework();
+				};
 			}
 		};
 	}
@@ -56,19 +59,18 @@ function Flash() {
 function Firework() {
 	this.x = randomBetween(0,canvas.width);
 	this.y = canvas.height;
-	this.radius = 5;
+	this.radius = 2;
 	this.explode = false;
-	this.speed = 5;
+	this.speed = randomBetween(5,20);
 
 	this.particles = [];
 	this.particleCount = 100;
 
 	this.generateParticles = function() {
 		for (var i = 0; i < this.particleCount; i++) {
-			this.particles.push(new Particle());
+			this.particles.push(new Particle(this.x, this.y));
 		}
 	}
-	this.generateParticles();
 
 	this.update = function() {
 		if (this.y >= canvas.height/2) {
@@ -79,6 +81,7 @@ function Firework() {
 		};
 		if (this.explode) {
 			Flash();
+			this.generateParticles();
 		};
 
 		return this;
@@ -94,9 +97,9 @@ function Firework() {
 	}
 }
 
-function Particle() {
-	this.x = canvas.width/2;
-	this.y = canvas.height/2;
+function Particle(x,y) {
+	this.x = x;
+	this.y = y;
 	this.angle = randomBetween(1, 360);
 	this.radius = randomBetween(1,5);
 	this.speed = randomBetween(1,5);
