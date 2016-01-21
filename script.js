@@ -52,31 +52,36 @@ function world() {
 }
 
 function Flash() {
-	context.fillStyle = "rgba(255,255,255,1)";
-	context.fillRect(0,0,canvas.width,canvas.height);
+	// context.fillStyle = "rgba(255,255,255,0.5)";
+	// context.fillRect(0,0,canvas.width,canvas.height);
 }
 
 function Firework() {
 	this.x = randomBetween(0,canvas.width);
 	this.y = canvas.height;
-	this.radius = 2;
+	this.radius = randomBetween(1,3);
 	this.explode = false;
-	this.speed = randomBetween(5,20);
+	this.speed = randomBetween(5,10) * this.radius;
 
 	this.particles = [];
 	this.particleCount = 100;
 
+	this.col = randomBetween(1,7);
+
+	this.life = randomBetween(canvas.height/2, canvas.height - 100);
+
 	this.generateParticles = function() {
 		for (var i = 0; i < this.particleCount; i++) {
-			this.particles.push(new Particle(this.x, this.y));
+			this.particles.push(new Particle(this.x, this.y, this.col));
 		}
 	}
 
 	this.update = function() {
-		if (this.y >= canvas.height/2) {
+		if (this.life > 0) {
+			this.life -= this.speed;
 			this.y -= this.speed;
 		};
-		if (this.y < canvas.height/2) {
+		if (this.life <= 0) {
 			this.explode = true;
 		};
 		if (this.explode) {
@@ -97,11 +102,11 @@ function Firework() {
 	}
 }
 
-function Particle(x,y) {
+function Particle(x,y,col) {
 	this.x = x;
 	this.y = y;
 	this.angle = randomBetween(1, 360);
-	this.radius = randomBetween(1,5);
+	this.radius = randomBetween(5,20);
 	this.speed = randomBetween(1,5);
 	this.life = 2;
 	this.r = 0;
@@ -109,7 +114,7 @@ function Particle(x,y) {
 	this.b = 0;
 
 	this.color = function() {
-	    var prioColor = randomBetween(1,7);
+	    var prioColor = col;
 	    
         if (prioColor == 1) {
             this.r = randomBetween(50,255);
