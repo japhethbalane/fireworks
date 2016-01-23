@@ -77,14 +77,14 @@ function Firework() {
 	}
 
 	this.update = function() {
-		if (this.life > 0) {
+		if (this.life > 0 && this.y <= this.y + this.tail) {
 			if (this.tail > 3) {
-				this.tail -= 2;
+				this.tail -= this.speed / 2;
 			};
 			this.life -= this.speed;
 			this.y -= this.speed;
 		};
-		if (this.life <= 0) {
+		if (this.life <= 0 || this.y >= this.y + this.tail) {
 			this.explode = true;
 		};
 		if (this.explode) {
@@ -113,7 +113,7 @@ function Particle(x,y,col) {
 	this.x = x;
 	this.y = y;
 	this.angle = randomBetween(1, 360);
-	this.radius = randomBetween(1,5);
+	this.radius = randomBetween(1,1);
 	this.speed = randomBetween(1,5);
 	this.life = 2;
 	this.r = 0;
