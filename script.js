@@ -5,7 +5,7 @@ canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
 var fireworks = [];
-var fireworkCount = 15;
+var fireworkCount = 5;
 
 initClearCanvas();
 generateFireworks();
@@ -24,7 +24,7 @@ function generateFireworks() {
 setInterval(world, 30);
 
 function clearCanvas() {
-	context.fillStyle = "rgba(0,0,0,0.1)";
+	context.fillStyle = "rgba(0,0,0,0.5)";
 	context.fillRect(0,0,canvas.width,canvas.height);
 }
 
@@ -59,7 +59,7 @@ function Flash() {
 function Firework() {
 	this.x = randomBetween(0,canvas.width);
 	this.y = canvas.height;
-	this.radius = randomBetween(1,3);
+	this.radius = randomBetween(1,1);
 	this.explode = false;
 	this.speed = randomBetween(7,10) * this.radius;
 
@@ -78,9 +78,6 @@ function Firework() {
 
 	this.update = function() {
 		if (this.life > 0 && this.y <= this.y + this.tail) {
-			if (this.tail > 3) {
-				this.tail -= this.speed / 2;
-			};
 			this.life -= this.speed;
 			this.y -= this.speed;
 		};
@@ -97,9 +94,7 @@ function Firework() {
 
 	this.draw = function() {
 		context.beginPath();
-		// context.arc(this.x, this.y, this.radius, Math.PI*2, false);
-		context.moveTo(this.x, this.y);
-		context.lineTo(this.x, this.y + this.tail);
+		context.arc(this.x, this.y, this.radius, Math.PI*2, false);
 		context.fillStyle = "#fff";
 		context.fill();
 		context.strokeStyle = "#fff";
@@ -113,8 +108,8 @@ function Particle(x,y,col) {
 	this.x = x;
 	this.y = y;
 	this.angle = randomBetween(1, 360);
-	this.radius = randomBetween(1,1);
-	this.speed = randomBetween(1,5);
+	this.radius = randomBetween(1,3);
+	this.speed = randomBetween(1,10);
 	this.life = 2;
 	this.r = 0;
 	this.g = 0;
